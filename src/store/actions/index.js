@@ -1,4 +1,6 @@
 export {
     setMovies,
-    initMovies
+    initMovies,
+    setCharacters,
+    initCharacters
 } from './actions';

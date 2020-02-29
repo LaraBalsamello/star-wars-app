@@ -21,3 +21,25 @@ export const initMovies = () => {
         // });
     };
 };
+
+
+export const setCharacters = (characters) => {
+    console.log(characters)
+    return {
+        type: actionTypes.SET_CHARACTERS,
+        characters: characters
+    };
+};
+
+export const initCharacters = () => {
+    return dispatch => {
+        axios.get('/people')
+            .then(response => {
+                console.log(response)
+                dispatch(setCharacters(response.data.results));
+            })
+        // .catch(error => {
+        //     dispatch(console.error(error));
+        // });
+    };
+};

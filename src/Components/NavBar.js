@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./NavBar.scss";
-import Display from "../Containers/Display";
 
 class NavBar extends Component {
 
@@ -8,17 +7,12 @@ class NavBar extends Component {
         character: ["bla"]
     }
 
-    clickHandler = (param) => {
-        console.log("display: ")
-    }
-
 
     render() {
         return (
             <div className="container-navbar">
-                <p character={this.state.character[0]} onClick={this.clickHandler("personajes")}>Personajes</p>
-                <p character={this.state.character[0]} onClick={this.clickHandler("películas")}>Películas</p>
-                <Display />
+                <p character={this.state.character[0]} onClick={() => this.props.click("PERSONAJES")}>Personajes</p>
+                <p character={this.state.character[0]} onClick={() => this.props.click("PELICULAS")}>Películas</p>
             </div>
         );
     }
