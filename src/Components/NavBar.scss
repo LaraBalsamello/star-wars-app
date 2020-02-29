@@ -1,0 +1,13 @@
+.container-navbar {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 20vw;
+    color: white;
+    p {
+        color: white;
+        text-align:start;
+        margin: 1rem;
+    }
+}
