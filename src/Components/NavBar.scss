@@ -1,12 +1,12 @@
 .container-navbar {
-    background-color: black;
+    background-color: white;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    max-width: 20vw;
-    color: white;
+    min-height: 85vh;
+    min-width: 20vw;
+    color: black;
     p {
-        color: white;
+        color: black;
         text-align:start;
         margin: 1rem;
     }

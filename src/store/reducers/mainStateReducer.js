@@ -3,7 +3,7 @@ import { updateObject } from '../../shared/utility';
 
 const initialState = {
     movies: null,
-    characters: null
+    characters: null,
 };
 
 export const setMovies = (state, action) => {

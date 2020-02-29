@@ -1,12 +1,49 @@
+.container {
+    display: flex;
+    background-color: black;
+    background-image: url("../logos/background-stars.png");
+}
+img{
+    color: white;
+    background-color: transparent;
+    width: 8rem;
+}
+
+.toolbar-fixed {
+    width: 100vw;
+    height: 15vh;
+    background-color: white;
+    text-align: center;
+}
+
 .search-display-container {
-    top: 0;
+    top: 15vh;
     position:absolute;
     left: 20vw;
     background-color: gainsboro;
-    width: 30%;
-    height: 100vh;
+    width: 40vw;
+    height: 85vh;
     font-size: 1rem;
     p {
         margin: 0px auto;
     }
+    &:empty{
+        width: 0px;
+    }
 }
+
+.details-container{
+    width: 20vw;
+    margin-left: 40vw;
+    color: white;
+}
+
+.container-search {
+    h4 {
+        margin: 0px;
+    }
+    padding: 1rem;
+    border-bottom: 1px solid black;
+    display: flex;
+}
+

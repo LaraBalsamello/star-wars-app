@@ -6,9 +6,9 @@ const display = (props) => {
     if (props.propsToShow) {
         display = (props.propsToShow.map((pr, index) => {
             if (pr.hasOwnProperty("title")) {
-                return (<p key={index}>{pr.title}</p>)
+                return (<p onClick={() => props.click(pr)} key={index}>{pr.title}</p>)
             } else {
-                return (<p key={index}>{pr.name}</p>)
+                return (<p onClick={() => props.click(pr)} key={index}>{pr.name}</p>)
             }
         }));
     }

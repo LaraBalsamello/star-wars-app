@@ -2,5 +2,9 @@ export {
     setMovies,
     initMovies,
     setCharacters,
-    initCharacters
+    initCharacters,
+    searchCharactersAPI,
+    searchMoviesAPI,
+    returnPrevCharacters,
+    returnPrevMovies
 } from './actions';
