@@ -8,17 +8,50 @@ import Image from '../logos/star-wars.png';
 import { Characters } from "../models/characters";
 import { Movie } from "../models/movie";
 import SearchBox from "../Components/SearchBox/SearchBox";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class Layout extends Component {
 
+    constructor() {
+        super();
+        this.handleScroll = this.handleScroll.bind(this);
+    }
+
     state = {
-        showDetails: null,
+        showDetails: (
+            <div>
+                <h2>Los detalles de la pelicula o personaje seleccionado se mostrarán aquí</h2>
+            </div>
+        ),
         showMovies: false,
-        showCharacters: false
+        showCharacters: false,
+        dontDisplay: true,
+        selected: null,
+        message: 'not at bottom',
+        height: window.innerHeight,
+        charsFetch: 1
+    }
+
+    handleScroll() {
+        if (this.props.loadingChars === false) {
+            let el = window.document.getElementById("scrolling-el");
+            if ((el.scrollTop >= (el.scrollHeight - el.offsetHeight))) {
+                this.setState({
+                    message: 'bottom reached',
+                });
+                this.setState({ charsFetch: this.state.charsFetch + 1 })
+                this.props.onNextChars(this.state.charsFetch);
+            } else {
+                this.setState({
+                    message: 'not at bottom'
+                });
+            }
+        }
     }
 
     componentDidMount() {
-        this.props.onInitCharacters();
+        this.props.onInitCharacters(this.state.charsFetch);
         this.props.onInitMovies();
     }
 
@@ -41,39 +74,64 @@ class Layout extends Component {
     }
 
     clickHandler = (e) => {
+        this.setState({ dontDisplay: false });
         if (e === "PELICULAS") {
             this.setState({
                 showMovies: true,
-                showCharacters: false
+                showCharacters: false,
+                selected: "PELICULAS"
             })
         } else {
             this.setState({
                 showCharacters: true,
-                showMovies: false
+                showMovies: false,
+                selected: "PERSONAJES"
             })
         }
     }
 
+    clickHandlerBackMenu = () => {
+        this.setState({ dontDisplay: true })
+    }
+
     clickHandlerDisplay = (e) => {
         let arrJSX = null;
+        this.setState({ dontDisplay: true })
         if (e.name) {
             let character = new Characters(e.name, e.eye_color, e.height, e.mass, e.films);
             arrJSX = (
-                <div>
-                    <h2>Nombre: {character.name}</h2>
-                    <p>Color de ojos: {character.eye_color}</p>
-                    <p>Peso: {character.height}</p>
+                <div className="details">
+                    <div className="container-info">
+                        <h2>Nombre:</h2> <p>{character.name}</p>
+                    </div>
+                    <div className="container-info">
+                        <h3>Color de ojos:</h3> <p>{character.eye_color}</p>
+                    </div>
+                    <div className="container-info">
+                        <h3>Peso:</h3><p>{character.height} kg</p>
+                    </div>
+                    <div className="container-info">
+                        <h3>Altura:</h3> <p>{character.height} m</p>
+                    </div>
                     {/* <p>Películas en las que participo: {character.eye_color}</p> */}
                 </div>
             );
         } else {
             let movie = new Movie(e.title, e.episode_id, e.director, e.producer, e.release_date);
             arrJSX = (
-                <div>
-                    <h2>Nombre: {movie.title}</h2>
-                    <p>Color de ojos: {movie.director}</p>
-                    <p>Peso: {movie.producer}</p>
-                    <p>Fecha  de estreno: {movie.release_date}</p>
+                <div className="details">
+                    <div className="container-info">
+                        <h2>Nombre:</h2> <p> {movie.title}</p>
+                    </div>
+                    <div className="container-info">
+                        <h3>Director:</h3> <p> {movie.director}</p>
+                    </div>
+                    <div className="container-info">
+                        <h3>Productor:</h3> <p> {movie.producer}</p>
+                    </div>
+                    <div className="container-info">
+                        <h3>Fecha de estreno:</h3> <p> {movie.release_date}</p>
+                    </div>
                 </div>
             );
         }
@@ -87,29 +145,61 @@ class Layout extends Component {
     render() {
         let type;
         let display = null;
-        if (this.state.showMovies) {
-
-            type = (<div className="container-search">
-                <h4>Películas</h4>
-                <SearchBox getSearch={this.catchSearch} />
-            </div>);
-            display = (<Display propsToShow={this.props.movies} click={this.clickHandlerDisplay}></Display>);
-        } else if (this.state.showCharacters) {
-            type = (<div className="container-search"><h4>Personajes</h4><SearchBox getSearch={this.catchSearch} /></div>);
-            display = (<Display propsToShow={this.props.characters} click={this.clickHandlerDisplay}></Display>);
+        let button = (
+            <FontAwesomeIcon
+                onClick={this.clickHandlerBackMenu}
+                className="fontawesome-icon"
+                icon={faArrowLeft}
+            />
+        );
+        let search = (<SearchBox getSearch={this.catchSearch} />);
+        if (this.state.showMovies && this.state.dontDisplay === false && this.props.loadingMovies === false) {
+            type = (
+                <div className="container-search">
+                    <div className="flex-container-icon">
+                        {button}
+                        <h4>Películas</h4>
+                    </div>
+                    {search}
+                </div>
+            );
+            display = (<Display loading={false} propsToShow={this.props.movies} click={this.clickHandlerDisplay}></Display>);
+        } else if (this.state.showCharacters && this.state.dontDisplay === false && this.props.loadingMovies === false) {
+            type = (
+                <div className="container-search">
+                    <div className="flex-container-icon">
+                        {button}
+                        <h4>Personajes</h4>
+                    </div>
+                    {search}
+                </div>
+            );
+            display = (<Display scrolling={this.handleScroll} loading={false} propsToShow={this.props.characters} click={this.clickHandlerDisplay}></Display>);
+        } else {
+            if (this.props.loadingMovies && this.state.showMovies) {
+                display = (<Display loading={true} click={this.clickHandlerDisplay}></Display>);
+            }
+            if (this.props.loadingChars && this.state.showCharacters) {
+                display = (<Display loading={true} click={this.clickHandlerDisplay}></Display>);
+            }
         }
+        let classesForDetailsCont = "details-container";
+        if (display === null) {
+            classesForDetailsCont = classesForDetailsCont + " smaller-margin";
+        }
+
         return (
             <div>
                 <div className="toolbar-fixed">
                     <img src={Image} alt="" />
                 </div>
                 <div className="container">
-                    <NavBar click={this.clickHandler}></NavBar>
+                    <NavBar selected={this.state.selected} click={this.clickHandler}></NavBar>
                     <div className="search-display-container">
                         {type}
                         {display}
                     </div>
-                    <div className="details-container">
+                    <div className={classesForDetailsCont}>
                         {this.state.showDetails}
                     </div>
                 </div>
@@ -122,18 +212,21 @@ const mapStateToProps = state => {
     return {
         movies: state.mainStateReducer.movies,
         characters: state.mainStateReducer.characters,
-        filteredChars: state.mainStateReducer.filteredChars
+        filteredChars: state.mainStateReducer.filteredChars,
+        loadingChars: state.mainStateReducer.loadingChars,
+        loadingMovies: state.mainStateReducer.loadingMovies
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onInitMovies: () => dispatch(actions.initMovies()),
-        onInitCharacters: () => dispatch(actions.initCharacters()),
+        onInitCharacters: (e) => dispatch(actions.initCharacters(e)),
         onSearchChars: (value) => dispatch(actions.searchCharactersAPI(value)),
         onSearchMovies: (value) => dispatch(actions.searchMoviesAPI(value)),
         onPrevMovies: () => dispatch(actions.returnPrevMovies()),
         onPrevChars: () => dispatch(actions.returnPrevCharacters()),
+        onNextChars: (e) => dispatch(actions.initCharacters(e))
     }
 }
 

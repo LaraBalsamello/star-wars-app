@@ -10,9 +10,11 @@ export const setMovies = (movies) => {
 
 export const initMovies = () => {
     return dispatch => {
+        dispatch(setLoadingMovies(true));
         axios.get('/films')
             .then(response => {
                 dispatch(setMovies(response.data.results));
+                dispatch(setLoadingMovies(false));
             })
         // .catch(error => {
         //     dispatch(console.error(error));
@@ -28,12 +30,28 @@ export const setCharacters = (characters) => {
     };
 };
 
+export const setLoadingChars = (loading) => {
+    return {
+        type: actionTypes.SET_LOADING_CHARACTERS,
+        loadingChars: loading
+    };
+};
 
-export const initCharacters = () => {
+export const setLoadingMovies = (loading) => {
+    return {
+        type: actionTypes.SET_LOADING_MOVIES,
+        loadingMovies: loading
+    };
+};
+
+
+export const initCharacters = (e) => {
     return dispatch => {
-        axios.get('/people/?page=3')
+        dispatch(setLoadingChars(true));
+        axios.get(`/people/?page=${e}`)
             .then(response => {
                 dispatch(setCharacters(response.data.results));
+                dispatch(setLoadingChars(false));
             })
         // .catch(error => {
         //     dispatch(console.error(error));
@@ -71,6 +89,7 @@ export const searchMoviesAPI = (e) => {
 export const returnPrevCharacters = () => {
     return initCharacters();
 };
+
 export const returnPrevMovies = (movies) => {
     return initMovies();
 };

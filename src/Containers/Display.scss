@@ -1,6 +1,8 @@
 .container-props {
     display: flex;
     flex-direction: column;
+    height: 50.9vh;
+    overflow: auto;
     p {
         border-bottom: 1px solid black;
         margin: 0px;

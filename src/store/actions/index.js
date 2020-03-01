@@ -6,5 +6,7 @@ export {
     searchCharactersAPI,
     searchMoviesAPI,
     returnPrevCharacters,
-    returnPrevMovies
+    returnPrevMovies,
+    setLoadingChars,
+    setLoadingMovies
 } from './actions';

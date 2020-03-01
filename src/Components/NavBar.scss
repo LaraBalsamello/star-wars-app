@@ -5,9 +5,24 @@
     min-height: 85vh;
     min-width: 20vw;
     color: black;
+    padding-top: 1.5rem;
+   
     p {
         color: black;
         text-align:start;
         margin: 1rem;
+        display: flex;
+        align-items: flex-end;
+        .fontawesome-icon {
+            margin-left: 1rem;
+        }
+    }
+}
+
+@media only screen and (max-width: 460px) {
+    .container-navbar {
+        p {
+            font-size: 0.7rem;
+        }
     }
 }

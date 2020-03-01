@@ -9,12 +9,7 @@
         height: 1.5rem;
         border: none;
         border-radius: 6px;
-        padding: 0.5rem;    
-    }
-    label {
-        margin-bottom: 1rem;
-        font-size: 1.3rem;
-        font-weight: 500;
+        padding: 1rem;    
     }
 }
 
@@ -27,11 +22,11 @@
 .search-container {
     display: flex;
     width: 90%;
-    align-items: center;
     max-height: fit-content;
     background-color: white;
     border-radius: 50px;
     height: 2.5rem;
+    align-items: center;
 }
 
 .for-cursor {
@@ -43,3 +38,14 @@
         margin: 0px;
     }
 }
+
+@media only screen and (max-width: 800px){
+    .search-container {
+        margin-top: 1rem;
+    }
+
+    .search-box {
+        align-items: flex-start;
+    }
+}
+
