@@ -41,7 +41,9 @@ class Layout extends Component {
                     message: 'bottom reached',
                 });
                 this.setState({ charsFetch: this.state.charsFetch + 1 })
-                this.props.onNextChars(this.state.charsFetch);
+                if (this.state.charsFetch < 10) {
+                    this.props.onNextChars(this.state.charsFetch);
+                }
             } else {
                 this.setState({
                     message: 'not at bottom'

@@ -28,8 +28,8 @@ class NavBar extends Component {
         }
         return (
             <div className="container-navbar">
-                <p character={this.state.character[0]} onClick={() => this.props.click("PERSONAJES")}>Personajes{icon1}</p>
-                <p character={this.state.character[0]} onClick={() => this.props.click("PELICULAS")}>Películas{icon2}</p>
+                <p className="cursor-pointer" character={this.state.character[0]} onClick={() => this.props.click("PERSONAJES")}>Personajes{icon1}</p>
+                <p className="cursor-pointer" character={this.state.character[0]} onClick={() => this.props.click("PELICULAS")}>Películas{icon2}</p>
             </div>
         );
     }

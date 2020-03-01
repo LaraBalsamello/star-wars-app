@@ -7,9 +7,9 @@ const display = (props) => {
     if (props.loading === false) {
         display = (props.propsToShow.map((pr, index) => {
             if (pr.hasOwnProperty("title")) {
-                return (<p onClick={() => props.click(pr)} key={index}>{pr.title}</p>)
+                return (<p className="cursor-pointer" onClick={() => props.click(pr)} key={index}>{pr.title}</p>)
             } else {
-                return (<p onClick={() => props.click(pr)} key={index}>{pr.name}</p>)
+                return (<p className="cursor-pointer" onClick={() => props.click(pr)} key={index}>{pr.name}</p>)
             }
         }));
     } else {
