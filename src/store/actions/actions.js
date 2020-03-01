@@ -16,12 +16,21 @@ export const initMovies = () => {
                 dispatch(setMovies(response.data.results));
                 dispatch(setLoadingMovies(false));
             })
-        // .catch(error => {
-        //     dispatch(console.error(error));
-        // });
+            .catch(error => {
+                dispatch(fetchFailed());
+                dispatch(setLoadingMovies(false));
+            });
     };
 };
 
+
+
+export const cleanError = () => {
+    return {
+        type: actionTypes.CLEAN_ERROR,
+        error: false
+    };
+};
 
 export const setCharacters = (characters) => {
     return {
@@ -53,21 +62,25 @@ export const initCharacters = (e) => {
                 dispatch(setCharacters(response.data.results));
                 dispatch(setLoadingChars(false));
             })
-        // .catch(error => {
-        //     dispatch(console.error(error));
-        // });
+            .catch(error => {
+                dispatch(fetchFailed());
+                dispatch(setLoadingChars(false));
+            });
     };
 };
 
 export const searchCharactersAPI = (e) => {
     return dispatch => {
+        dispatch(setLoadingChars(true));
         axios.get(`/people/?search=${e}`)
             .then(response => {
                 dispatch(setCharacters(response.data.results));
+                dispatch(setLoadingChars(false));
             })
-        // .catch(error => {
-        //     dispatch(console.error(error));
-        // });
+            .catch(error => {
+                dispatch(fetchFailed());
+                dispatch(setLoadingChars(false));
+            });
     };
 
 };
@@ -75,15 +88,24 @@ export const searchCharactersAPI = (e) => {
 
 export const searchMoviesAPI = (e) => {
     return dispatch => {
+        dispatch(setLoadingChars(true));
         axios.get(`/films/?search=${e}`)
             .then(response => {
                 dispatch(setMovies(response.data.results));
+                dispatch(setLoadingMovies(false));
             })
-        // .catch(error => {
-        //     dispatch(console.error(error));
-        // });
+            .catch(error => {
+                dispatch(fetchFailed());
+                dispatch(setLoadingMovies(false));
+            });
     };
 
+};
+
+export const fetchFailed = () => {
+    return {
+        type: actionTypes.FETCH_FAILED
+    };
 };
 
 export const returnPrevCharacters = () => {

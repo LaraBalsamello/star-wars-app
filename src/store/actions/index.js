@@ -8,5 +8,6 @@ export {
     returnPrevCharacters,
     returnPrevMovies,
     setLoadingChars,
-    setLoadingMovies
+    setLoadingMovies,
+    cleanError
 } from './actions';

@@ -5,7 +5,8 @@ const initialState = {
     movies: null,
     characters: [],
     loadingChars: false,
-    loadingMovies: false
+    loadingMovies: false,
+    error: false,
 };
 
 export const setMovies = (state, action) => {
@@ -22,7 +23,6 @@ export const setCharacters = (state, action) => {
 };
 
 export const setLoadingChars = (state, action) => {
-    console.log(action.loadingChars);
     return {
         ...state,
         loadingChars: action.loadingChars
@@ -30,11 +30,18 @@ export const setLoadingChars = (state, action) => {
 };
 
 export const setLoadingMovies = (state, action) => {
-    console.log(action.loadingMovies);
     return {
         ...state,
         loadingMovies: action.loadingMovies
     }
+};
+
+const fetchFailed = (state, action) => {
+    return updateObject(state, { error: true });
+};
+
+const cleanError = (state, action) => {
+    return updateObject(state, { error: false });
 };
 
 
@@ -45,6 +52,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SET_CHARACTERS: return setCharacters(state, action);
         case actionTypes.SET_LOADING_MOVIES: return setLoadingMovies(state, action);
         case actionTypes.SET_LOADING_CHARACTERS: return setLoadingChars(state, action);
+        case actionTypes.FETCH_FAILED: return fetchFailed(state, action);
+        case actionTypes.CLEAN_ERROR: return cleanError(state, action);
         default: return state;
     }
 };

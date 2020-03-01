@@ -30,13 +30,13 @@ class Layout extends Component {
         selected: null,
         message: 'not at bottom',
         height: window.innerHeight,
-        charsFetch: 1
+        charsFetch: 1,
     }
 
     handleScroll() {
         if (this.props.loadingChars === false) {
             let el = window.document.getElementById("scrolling-el");
-            if ((el.scrollTop >= (el.scrollHeight - el.offsetHeight))) {
+            if ((el.scrollTop >= (el.scrollHeight - el.offsetHeight) - 10)) {
                 this.setState({
                     message: 'bottom reached',
                 });
@@ -65,9 +65,9 @@ class Layout extends Component {
             }
         } else if (value.length === 0) {
             if (this.state.showCharacters) {
-                this.props.onPrevChars();
+                this.props.onInitCharacters(this.state.charsFetch);
             } else {
-                this.props.onPrevMovies();
+                this.props.onInitMovies();
             }
         }
 
@@ -91,6 +91,9 @@ class Layout extends Component {
     }
 
     clickHandlerBackMenu = () => {
+        if (this.props.error) {
+            this.props.onCleanError();
+        }
         this.setState({ dontDisplay: true })
     }
 
@@ -153,7 +156,7 @@ class Layout extends Component {
             />
         );
         let search = (<SearchBox getSearch={this.catchSearch} />);
-        if (this.state.showMovies && this.state.dontDisplay === false && this.props.loadingMovies === false) {
+        if (this.props.error === false && this.state.showMovies && this.state.dontDisplay === false && this.props.loadingMovies === false) {
             type = (
                 <div className="container-search">
                     <div className="flex-container-icon">
@@ -164,7 +167,7 @@ class Layout extends Component {
                 </div>
             );
             display = (<Display loading={false} propsToShow={this.props.movies} click={this.clickHandlerDisplay}></Display>);
-        } else if (this.state.showCharacters && this.state.dontDisplay === false && this.props.loadingMovies === false) {
+        } else if (this.props.error === false && this.state.showCharacters && this.state.dontDisplay === false && this.props.loadingMovies === false) {
             type = (
                 <div className="container-search">
                     <div className="flex-container-icon">
@@ -175,13 +178,19 @@ class Layout extends Component {
                 </div>
             );
             display = (<Display scrolling={this.handleScroll} loading={false} propsToShow={this.props.characters} click={this.clickHandlerDisplay}></Display>);
-        } else {
+        } else if (this.props.error === false) {
             if (this.props.loadingMovies && this.state.showMovies) {
                 display = (<Display loading={true} click={this.clickHandlerDisplay}></Display>);
             }
             if (this.props.loadingChars && this.state.showCharacters) {
                 display = (<Display loading={true} click={this.clickHandlerDisplay}></Display>);
             }
+        } else if (this.props.error === true) {
+            display = (
+                <div>
+                    {button}Hubo un error en el servidor o no se encontraron resultados. Vuelvalo a intentar en unos segundos
+                </div>
+            );
         }
         let classesForDetailsCont = "details-container";
         if (display === null) {
@@ -214,7 +223,8 @@ const mapStateToProps = state => {
         characters: state.mainStateReducer.characters,
         filteredChars: state.mainStateReducer.filteredChars,
         loadingChars: state.mainStateReducer.loadingChars,
-        loadingMovies: state.mainStateReducer.loadingMovies
+        loadingMovies: state.mainStateReducer.loadingMovies,
+        error: state.mainStateReducer.error,
     };
 }
 
@@ -226,7 +236,8 @@ const mapDispatchToProps = dispatch => {
         onSearchMovies: (value) => dispatch(actions.searchMoviesAPI(value)),
         onPrevMovies: () => dispatch(actions.returnPrevMovies()),
         onPrevChars: () => dispatch(actions.returnPrevCharacters()),
-        onNextChars: (e) => dispatch(actions.initCharacters(e))
+        onNextChars: (e) => dispatch(actions.initCharacters(e)),
+        onCleanError: () => dispatch(actions.cleanError())
     }
 }
 
