@@ -4,7 +4,6 @@ import Loader from "../Components/Loader/Loader";
 import { connect } from "react-redux";
 
 const display = (props) => {
-    console.log(props.loadingMore)
     let display = null;
     let loadingMore = null;
     if (props.loading === false) {
