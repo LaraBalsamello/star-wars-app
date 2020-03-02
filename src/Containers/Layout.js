@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import Display from "./Display";
 import "./Layout.scss";
 import Image from '../logos/star-wars.png';
+import ImageDeathStar from '../logos/darth-vader.png';
 import { Characters } from "../models/characters";
 import { Movie } from "../models/movie";
 import SearchBox from "../Components/SearchBox/SearchBox";
@@ -30,6 +31,7 @@ class Layout extends Component {
         selected: null,
         height: window.innerHeight,
         charsFetch: 1,
+        firstLoad: true
     }
 
     handleScroll() {
@@ -47,6 +49,11 @@ class Layout extends Component {
     componentDidMount() {
         this.props.onInitCharacters(this.state.charsFetch);
         this.props.onInitMovies();
+        if (this.state.firstLoad) {
+            setTimeout(() => {
+                this.setState({ firstLoad: false })
+            }, 3000);
+        }
     }
 
     catchSearch = (value) => {
@@ -142,14 +149,20 @@ class Layout extends Component {
     render() {
         let type;
         let display = null;
-        let button = (
-            <FontAwesomeIcon
-                onClick={this.clickHandlerBackMenu}
-                className="fontawesome-icon"
-                icon={faArrowLeft}
-            />
-        );
-        let search = (<SearchBox getSearch={this.catchSearch} />);
+        let button = null;
+        let search = null;
+        let classesForDetailsCont = "details-container";
+        if (!this.state.firstLoad) {
+            button = (
+                <FontAwesomeIcon
+                    onClick={this.clickHandlerBackMenu}
+                    className="fontawesome-icon"
+                    icon={faArrowLeft}
+                />
+            );
+            search = (<SearchBox getSearch={this.catchSearch} />);
+        }
+
         if (this.props.error === false && this.state.showMovies && this.state.dontDisplay === false && this.props.loadingMovies === false) {
             type = (
                 <div className="container-search">
@@ -186,26 +199,41 @@ class Layout extends Component {
                 </div>
             );
         }
-        let classesForDetailsCont = "details-container";
         if (display === null) {
             classesForDetailsCont = classesForDetailsCont + " smaller-margin";
+        }
+        let renderAll = null;
+        let renderFirst = null;
+        if (!this.state.firstLoad) {
+            renderAll = (
+                <div className="anim-appear">
+                    <div className="toolbar-fixed">
+                        <img src={Image} alt="" />
+                    </div>
+                    <div className="container animate-begin">
+                        <NavBar selected={this.state.selected} click={this.clickHandler}></NavBar>
+                        <div className="search-display-container">
+                            {type}
+                            {display}
+                        </div>
+                        <div className={classesForDetailsCont}>
+                            {this.state.showDetails}
+                        </div>
+                    </div>
+                </div>
+            )
+        } else {
+            renderFirst = (
+                <div className="first-load">
+                    <img src={ImageDeathStar} alt=""></img>
+                </div>
+            );
         }
 
         return (
             <div>
-                <div className="toolbar-fixed">
-                    <img src={Image} alt="" />
-                </div>
-                <div className="container animate-begin">
-                    <NavBar selected={this.state.selected} click={this.clickHandler}></NavBar>
-                    <div className="search-display-container">
-                        {type}
-                        {display}
-                    </div>
-                    <div className={classesForDetailsCont}>
-                        {this.state.showDetails}
-                    </div>
-                </div>
+                {renderAll}
+                {renderFirst}
             </div>
         );
     }
