@@ -128,6 +128,19 @@ img{
     cursor: pointer;
 }
 
+.animate-begin {
+   animation: 1s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+
+@keyframes {
+    from{
+        display: none
+    }
+    to {
+        display: flex;
+    }
+}
+
 @media only screen and (max-width: 800px){
     .container-search {
         flex-direction: column;

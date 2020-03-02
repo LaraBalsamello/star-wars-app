@@ -8,23 +8,6 @@ export const setMovies = (movies) => {
     };
 };
 
-export const initMovies = () => {
-    return dispatch => {
-        dispatch(setLoadingMovies(true));
-        axios.get('/films')
-            .then(response => {
-                dispatch(setMovies(response.data.results));
-                dispatch(setLoadingMovies(false));
-            })
-            .catch(error => {
-                dispatch(fetchFailed());
-                dispatch(setLoadingMovies(false));
-            });
-    };
-};
-
-
-
 export const cleanError = () => {
     return {
         type: actionTypes.CLEAN_ERROR,
@@ -53,18 +36,52 @@ export const setLoadingMovies = (loading) => {
     };
 };
 
+export const setLoadingMore = (loading) => {
+    return {
+        type: actionTypes.SET_LOADING_MORE,
+        loadingMore: loading
+    };
+}
 
-export const initCharacters = (e) => {
+export const initMovies = () => {
     return dispatch => {
-        dispatch(setLoadingChars(true));
-        axios.get(`/people/?page=${e}`)
+        dispatch(setLoadingMovies(true));
+        axios.get('/films')
             .then(response => {
-                dispatch(setCharacters(response.data.results));
-                dispatch(setLoadingChars(false));
+                dispatch(setMovies(response.data.results));
+                dispatch(setLoadingMovies(false));
             })
             .catch(error => {
                 dispatch(fetchFailed());
-                dispatch(setLoadingChars(false));
+                dispatch(setLoadingMovies(false));
+            });
+    };
+};
+
+
+export const initCharacters = (e) => {
+    return dispatch => {
+        if (e === 0) {
+            dispatch(setLoadingChars(true));
+        } else {
+            dispatch(setLoadingMore(true));
+        }
+        axios.get(`/people/?page=${e}`)
+            .then(response => {
+                dispatch(setCharacters(response.data.results));
+                if (e === 0) {
+                    dispatch(setLoadingChars(false));
+                } else {
+                    dispatch(setLoadingMore(false));
+                }
+            })
+            .catch(error => {
+                dispatch(fetchFailed());
+                if (e === 0) {
+                    dispatch(setLoadingChars(false));
+                } else {
+                    dispatch(setLoadingMore(false));
+                }
             });
     };
 };
@@ -80,6 +97,7 @@ export const searchCharactersAPI = (e) => {
             .catch(error => {
                 dispatch(fetchFailed());
                 dispatch(setLoadingChars(false));
+
             });
     };
 
@@ -108,10 +126,3 @@ export const fetchFailed = () => {
     };
 };
 
-export const returnPrevCharacters = () => {
-    return initCharacters();
-};
-
-export const returnPrevMovies = (movies) => {
-    return initMovies();
-};

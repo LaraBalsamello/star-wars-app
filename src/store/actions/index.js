@@ -5,9 +5,8 @@ export {
     initCharacters,
     searchCharactersAPI,
     searchMoviesAPI,
-    returnPrevCharacters,
-    returnPrevMovies,
     setLoadingChars,
     setLoadingMovies,
-    cleanError
+    cleanError,
+    setLoadingMore
 } from './actions';

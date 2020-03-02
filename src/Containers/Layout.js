@@ -28,26 +28,18 @@ class Layout extends Component {
         showCharacters: false,
         dontDisplay: true,
         selected: null,
-        message: 'not at bottom',
         height: window.innerHeight,
         charsFetch: 1,
     }
 
     handleScroll() {
-        if (this.props.loadingChars === false) {
+        if (this.props.loadingChars === false && this.props.loadingMore === false) {
             let el = window.document.getElementById("scrolling-el");
-            if ((el.scrollTop >= (el.scrollHeight - el.offsetHeight) - 10)) {
-                this.setState({
-                    message: 'bottom reached',
-                });
+            if ((el.scrollTop >= (el.scrollHeight - el.offsetHeight) - 1)) {
                 this.setState({ charsFetch: this.state.charsFetch + 1 })
                 if (this.state.charsFetch < 10) {
                     this.props.onNextChars(this.state.charsFetch);
                 }
-            } else {
-                this.setState({
-                    message: 'not at bottom'
-                });
             }
         }
     }
@@ -204,7 +196,7 @@ class Layout extends Component {
                 <div className="toolbar-fixed">
                     <img src={Image} alt="" />
                 </div>
-                <div className="container">
+                <div className="container animate-begin">
                     <NavBar selected={this.state.selected} click={this.clickHandler}></NavBar>
                     <div className="search-display-container">
                         {type}
@@ -226,6 +218,7 @@ const mapStateToProps = state => {
         filteredChars: state.mainStateReducer.filteredChars,
         loadingChars: state.mainStateReducer.loadingChars,
         loadingMovies: state.mainStateReducer.loadingMovies,
+        loadingMore: state.mainStateReducer.loadingMore,
         error: state.mainStateReducer.error,
     };
 }
@@ -236,8 +229,6 @@ const mapDispatchToProps = dispatch => {
         onInitCharacters: (e) => dispatch(actions.initCharacters(e)),
         onSearchChars: (value) => dispatch(actions.searchCharactersAPI(value)),
         onSearchMovies: (value) => dispatch(actions.searchMoviesAPI(value)),
-        onPrevMovies: () => dispatch(actions.returnPrevMovies()),
-        onPrevChars: () => dispatch(actions.returnPrevCharacters()),
         onNextChars: (e) => dispatch(actions.initCharacters(e)),
         onCleanError: () => dispatch(actions.cleanError())
     }

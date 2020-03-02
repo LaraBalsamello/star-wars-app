@@ -7,11 +7,18 @@ const initialState = {
     loadingChars: false,
     loadingMovies: false,
     error: false,
+    loadingMore: false
 };
 
 export const setMovies = (state, action) => {
     return updateObject(state, {
         movies: action.movies,
+    });
+};
+
+export const setLoadingMore = (state, action) => {
+    return updateObject(state, {
+        loadingMore: action.loadingMore,
     });
 };
 
@@ -52,6 +59,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SET_CHARACTERS: return setCharacters(state, action);
         case actionTypes.SET_LOADING_MOVIES: return setLoadingMovies(state, action);
         case actionTypes.SET_LOADING_CHARACTERS: return setLoadingChars(state, action);
+        case actionTypes.SET_LOADING_MORE: return setLoadingMore(state, action);
         case actionTypes.FETCH_FAILED: return fetchFailed(state, action);
         case actionTypes.CLEAN_ERROR: return cleanError(state, action);
         default: return state;
