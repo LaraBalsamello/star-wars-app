@@ -156,6 +156,14 @@ img{
     background-color: black;
 }
 
+.error-container {
+    padding: 1rem;
+    svg {
+        margin-right: 1rem;
+        cursor: pointer;
+    }
+}
+
 @keyframes anim-leave{
     0%{
         opacity: 1;
@@ -181,6 +189,7 @@ img{
     .container-search {
         flex-direction: column;
     }
+    
 }
 
 

@@ -194,7 +194,7 @@ class Layout extends Component {
             }
         } else if (this.props.error === true) {
             display = (
-                <div>
+                <div className="error-container">
                     {button}Hubo un error en el servidor o no se encontraron resultados. Vuelvalo a intentar en unos segundos
                 </div>
             );
