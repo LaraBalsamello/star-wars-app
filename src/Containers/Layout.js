@@ -22,7 +22,7 @@ class Layout extends Component {
     state = {
         showDetails: (
             <div>
-                <h2>Los detalles de la pelicula o personaje seleccionado se mostrarán aquí</h2>
+                <h2>Los detalles de la película o personaje seleccionado se mostrarán aquí</h2>
             </div>
         ),
         showMovies: false,
