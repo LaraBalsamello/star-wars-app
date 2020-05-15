@@ -1,33 +1,31 @@
 .container-navbar {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    min-height: 85vh;
-    min-width: 20vw;
-    color: black;
-    padding-top: 1.5rem;
-   
-    p {
-        color: black;
-        text-align:start;
-        margin: 1rem;
-        display: flex;
-        align-items: flex-end;
-        .fontawesome-icon {
-            margin-left: 1rem;
-        }
-    }
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	min-height: 85vh;
+	min-width: 20vw;
+	color: black;
+	padding-top: 5rem;
+	p {
+		color: black;
+		text-align: start;
+		margin: 1rem;
+		display: flex;
+		align-items: flex-end;
+		.fontawesome-icon {
+			margin-left: 1rem;
+		}
+	}
 }
 
-
 .cursor-pointer {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 @media only screen and (max-width: 460px) {
-    .container-navbar {
-        p {
-            font-size: 0.7rem;
-        }
-    }
+	.container-navbar {
+		p {
+			font-size: 0.7rem;
+		}
+	}
 }
